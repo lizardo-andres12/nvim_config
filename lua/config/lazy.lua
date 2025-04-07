@@ -48,7 +48,7 @@ vim.cmd("set shiftwidth=4")
 vim.cmd("set expandtab")
 
 -- show whitespace and line length limit
-vim.cmd("set list listchars=trail:~,extends:>")
+vim.opt.listchars = { tab = '  ', trail = '~', extends = '>' }
 vim.cmd("highlight ExtraWhitespace ctermbg=lightgreen guibg=lightgreen")
 vim.cmd("match ExtraWhitespace /\\s\\+$/")
 vim.cmd("set textwidth=100")
