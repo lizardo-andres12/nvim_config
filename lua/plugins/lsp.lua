@@ -62,6 +62,7 @@ return {
                     map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
                     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
                     map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+                    map('<leader>se', vim.diagnostic.open_float, '[S]ee [E]rror')
 
                     local function client_supports_method(client, method, bufnr)
                         if vim.fn.has 'nvim-0.11' == 1 then
@@ -121,9 +122,14 @@ return {
             capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
             local servers = {
-                clangd = {},
+                clangd = {
+                    cmd = {
+                        "clangd",
+                        "--compile-commands-dir=build/"
+                    },
+                },
                 gopls = {},
-                --pyright = {},
+                pyright = {},
                 lua_ls = {
                     settings = {
                         Lua = {
@@ -134,7 +140,7 @@ return {
             }
 
             local ensure_installed = vim.tbl_keys(servers or {})
-            vim.list_extend(ensure_installed, { 'stylua' })
+            vim.list_extend(ensure_installed, { 'stylua', 'clangd', 'gopls' })
             require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
             require('mason-lspconfig').setup {
